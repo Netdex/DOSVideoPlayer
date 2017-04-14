@@ -12,8 +12,8 @@ Binary Data Specification
 ============================
 
 struct chunk_data {
-  unsigned short repeat_count;  // Number of times the following data repeats
   unsigned char data;           // Color data of said pixel
+  unsigned short repeat_count;  // Number of times the following data repeats
 }
 
 struct frame {
