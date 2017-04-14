@@ -87,6 +87,7 @@ namespace FramePack
         {
             if ((r + g + b) / 3 > 128)
                 return 1;
+
             return 0;
         }
     }
