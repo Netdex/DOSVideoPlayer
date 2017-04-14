@@ -86,7 +86,7 @@ namespace FramePack
         public static byte GetBinaryData(byte r, byte g, byte b)
         {
             if ((r + g + b) / 3 > 128)
-                return 1;
+                return 15;
 
             return 0;
         }
