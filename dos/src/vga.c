@@ -1,7 +1,6 @@
 #include "vga.h"
 
 
-
 byte *DVGA = (byte *)0xA0000;          /* this points to video memory. */
 byte *VGA_BUFFER;
 
@@ -13,7 +12,6 @@ void vga_set_mode(byte mode)
 	regs.h.al = mode;
 	int86(VIDEO_INT, &regs, &regs);
 }
-
 
 void vga_plot(int x,int y,byte color)
 {

@@ -21,3 +21,18 @@ struct frame_data decode_frame(FILE *file, byte *dest){
 	}
 	return fd;
 }
+
+word get_audio_event_count(FILE *file){
+	word count;
+	fread(&count, sizeof(count), 1, file);
+	return count;
+}
+
+struct audio_frame decode_audio_frame(FILE *file){
+	struct audio_frame af;
+	fread(&af.frame, sizeof(af.frame), 1, file);
+	fread(&af.action, sizeof(af.action), 1, file);
+	if(af.action)
+		fread(&af.frequency, sizeof(af.frequency), 1, file);
+	return af;
+}
