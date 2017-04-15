@@ -3,25 +3,27 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "types.h"
 
-#define HEADER_DATA_SIZE 	3
-#define FRAME_DATA_SIZE 	2
-#define CHUNK_DATA_SIZE		3
-
-struct header_data {
+struct video_header {
 	word frame_count;
 	byte frame_rate;
 };
 
-struct frame_data {
+struct video_frame {
 	word chunk_count;
 };
 
-struct chunk_data {
+struct video_chunk_data {
 	byte data;
 	word repeat;
+};
+
+struct audio_header {
+	word frame_count;
+	byte frame_rate;
 };
 
 struct audio_frame {
@@ -30,10 +32,23 @@ struct audio_frame {
 	word frequency;
 };
 
-struct header_data decode_header(FILE *file);
-struct frame_data decode_frame(FILE *file, byte* dest);
+struct lyric_header {
+	word frame_count;
+	
+};
 
-word get_audio_event_count(FILE *file);
+struct lyric_frame {
+	int delay;
+	char *text;
+};
+
+struct video_header decode_video_header(FILE *file);
+struct video_frame decode_video_frame(FILE *file, byte* dest);
+
+struct audio_header decode_audio_header(FILE *file);
 struct audio_frame decode_audio_frame(FILE *file);
+
+struct lyric_header decode_lyric_header(FILE *file);
+struct lyric_frame decode_lyric_frame(FILE *file);
 
 #endif

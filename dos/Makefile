@@ -9,10 +9,10 @@ BDIR=bin
 
 LIBS=-lm
 
-_DEPS = vga.h types.h util.h decoder.h
+_DEPS = vga.h types.h util.h decoder.h keyboard.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o vga.o util.o decoder.o
+_OBJ = main.o vga.o util.o decoder.o keyboard.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 

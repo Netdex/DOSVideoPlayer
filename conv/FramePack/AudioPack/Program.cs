@@ -27,6 +27,7 @@ namespace AudioPack
             ushort lastFrame = 0;
             byte lastAction = 0;
             ushort lastFreq = 0;
+
             foreach (string line in data)
             {
                 string[] linedata = line.Split(',');
@@ -69,6 +70,7 @@ namespace AudioPack
             eventCount++;
 
             fstream.Write(BitConverter.GetBytes(eventCount), 0, 2);
+            fstream.WriteByte((byte)fps);
             eventBuffer.WriteTo(fstream);
         }
 
