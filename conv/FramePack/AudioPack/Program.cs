@@ -14,7 +14,7 @@ namespace AudioPack
         {
             string path = @"D:\Security\VMSHARED\Development\BadAppleDOS\conv\midi";
             string filename = "ba_mono";
-            int fps = 120;
+            int fps = 90;
 
             string filepath = Path.Combine(path, filename + ".csv");
             double resolution = 1.0 / fps;
@@ -74,7 +74,7 @@ namespace AudioPack
 
         public static int GetFrequency(int key)
         {
-            return (int)(Math.Pow(2, (key - 49) / 12.0) * 440);
+            return (int)(Math.Pow(2, (key - 69) / 12.0) * 440);
         }
     }
 }

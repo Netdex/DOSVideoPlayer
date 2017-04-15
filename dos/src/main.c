@@ -9,7 +9,7 @@
 #include "util.h"
 #include "decoder.h"
 
-#define AUDIO_REALTIME 8
+#define AUDIO_REALTIME 6
 
 extern byte *VGA_BUFFER;
 
@@ -24,7 +24,7 @@ int main(){
 	word audio_count = get_audio_event_count(audio_file);
 	word audio_event = 0;
 	
-	int framems = 1000 / hd.frame_rate;
+	int framems = 850 / hd.frame_rate;
 	struct audio_frame af;
 	clock_t last_frame = clock();
 	
@@ -34,7 +34,7 @@ int main(){
 		
 		clock_t now = clock();
 		clock_t diff = now - last_frame;
-		int del = max(0, framems - (int) diff);
+		int del = max(0, framems - (int) (diff / CLOCKS_PER_SEC));
 		
 		// process audio during sleep
 		for(int d = 0; d < AUDIO_REALTIME; d++){
@@ -50,11 +50,13 @@ int main(){
 					nosound();
 				}
 			}
-			delay(del / AUDIO_REALTIME);
+			delay(del / (AUDIO_REALTIME));
 		}
 		
 		last_frame = now;
 	}
+	fclose(video_file);
+	fclose(audio_file);
 	
 	vga_set_mode(TEXT_MODE);
 	return 0;
