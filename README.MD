@@ -7,25 +7,41 @@ A trojan designed to nuke a hard drive and make it play Bad Apple on boot.
 
 ### Data Encoding
 #### Movie File Format
-```
-Binary Data Specification
-============================
+``` c
+/* Video is stored in a series of RLE compressed bitmaps */
 
 struct chunk_data {
   unsigned char data;           // Color data of said pixel
   unsigned short repeat_count;  // Number of times the following data repeats
-}
+};
 
-struct frame {
+struct frame_data {
   unsigned short chunk_count;   // Number of chunks in this frame
-  chunk_data *chunks;           // List of all chunks
-}
+  struct chunk_data *chunks;    // List of all chunks
+};
 
-struct movie_data {
+struct video_data {
   unsigned short frame_count;   // Total frame count of entire movie
   unsigned char frame_rate;     // Frames to display per second
-  frame *frames;                // List of all frames
-} movie_binary;
+  struct frame_data *frames;    // List of all frames
+} video_binary;
+
+```
+
+#### Audio File Format
+``` c
+/* Audio is stored in a series of single channel beepcodes */
+
+struct frame_data {
+  unsigned short frame;
+  unsigned char action;
+  unsigned short frequency;
+};
+
+struct audio_data {
+  unsigned short frame_count;
+  struct frame_data *frames;
+} audio_binary;
 
 ```
 ### Data Decoding and Rendering
