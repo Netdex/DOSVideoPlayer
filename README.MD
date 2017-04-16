@@ -2,7 +2,7 @@
 `This project is a work-in-progress.`
 
 A trojan designed to nuke a hard drive and make it play Bad Apple on boot.
-[demo](https://streamable.com/q3sm3)
+[demo](https://streamable.com/gbiy2)
 
 ## Components
 
