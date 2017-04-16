@@ -9,16 +9,13 @@ A trojan designed to nuke a hard drive and make it play Bad Apple on boot.
 ### Data Encoding
 #### Movie File Format
 ``` c
-/* Video is stored in a series of RLE compressed bitmaps */
+/* Video is stored in a series of LZ4 compressed 256-color bitmaps */
 
-struct chunk_data {
-  unsigned char data;           // Color data of said pixel
-  unsigned short repeat_count;  // Number of times the following data repeats
-};
-
+/* LZ4 compressed frame */
 struct frame_data {
-  unsigned short chunk_count;   // Number of chunks in this frame
-  struct chunk_data *chunks;    // List of all chunks
+  unsigned char *palette;       // 768 byte palette
+  int size;
+  unsigned char *data;
 };
 
 struct video_data {
@@ -44,6 +41,15 @@ struct audio_data {
   struct frame_data *frames;
 } audio_binary;
 
+```
+
+#### Lyric File Format
+```
+/* Lyrics are stored in a text file */
+[EVENT_COUNT]
+[PHONEME] [DELAY]
+...
+[PHONEME] [DELAY]
 ```
 ### Data Decoding and Rendering
 
