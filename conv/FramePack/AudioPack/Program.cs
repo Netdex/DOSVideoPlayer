@@ -12,9 +12,9 @@ namespace AudioPack
     {
         static void Main(string[] args)
         {
-            string path = @"D:\Security\VMSHARED\Development\BadAppleDOS\conv\midi";
+            string path = @"D:\Security\VMSHARED\Development\code\BadAppleDOS\conv\midi";
             string filename = "ba_mono";
-            int fps = 90;
+            int fps = 96;
 
             string filepath = Path.Combine(path, filename + ".csv");
             double resolution = 1.0 / fps;

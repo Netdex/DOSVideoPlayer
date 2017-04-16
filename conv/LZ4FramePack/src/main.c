@@ -6,6 +6,7 @@
 #  define snprintf sprintf_s
 #endif
 #include "lz4.h"
+#include "lz4hc.h"
 
 #include <stdio.h>
 #include <stdint.h>
@@ -49,8 +50,8 @@ size_t read_bin(FILE* fp, void* array, size_t arrayBytes) {
 }
 
 void lz4_frame_pack(FILE* outFp, FILE* inpFp) {
-	LZ4_stream_t lz4Stream_body;
-	LZ4_stream_t* lz4Stream = &lz4Stream_body;
+	LZ4_streamHC_t lz4Stream_body;
+	LZ4_streamHC_t* lz4Stream = &lz4Stream_body;
 
 	char inpBuf[2][BLOCK_BYTES];
 	int inpBufIndex = 0;
@@ -63,7 +64,7 @@ void lz4_frame_pack(FILE* outFp, FILE* inpFp) {
 	write_short(outFp, frame_count);
 	write_byte(outFp, fps);
 
-	LZ4_resetStream(lz4Stream);
+	LZ4_resetStreamHC(lz4Stream, 9);
 
 	for (int f = 0; f < frame_count; f++) {
 		char* const inpPtr = inpBuf[inpBufIndex];
@@ -74,8 +75,8 @@ void lz4_frame_pack(FILE* outFp, FILE* inpFp) {
 		}
 		{
 			char cmpBuf[LZ4_COMPRESSBOUND(BLOCK_BYTES)];
-			const int cmpBytes = LZ4_compress_fast_continue(lz4Stream, inpPtr,
-					cmpBuf, inpBytes, sizeof(cmpBuf), 1);
+			const int cmpBytes = LZ4_compress_HC_continue(lz4Stream, inpPtr,
+					cmpBuf, inpBytes, sizeof(cmpBuf));
 			if (cmpBytes <= 0) {
 				printf("file ended early!\n");
 				break;

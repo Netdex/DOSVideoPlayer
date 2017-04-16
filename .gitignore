@@ -4,6 +4,7 @@ conv/frames
 *.sfk
 *.veg
 *.bak
+*.bin
 
 # User-specific files
 *.suo

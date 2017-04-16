@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,15 +14,20 @@ namespace FrameExtract
     {
         public static unsafe void Main(string[] args)
         {
-            string path = @"D:\Security\VMSHARED\Development\code\BadAppleDOS\conv\frames\badapple";
-            string prefix = "badapple";
-            string extension = "png";
-            ushort count = 3288;
-            byte frameRate = 15;
+            //string path = @"D:\Security\VMSHARED\Development\code\BadAppleDOS\conv\frames\badapple";
+            //string prefix = "badapple";
+            //string extension = "png";
+            //ushort count = 5260;
+            //byte frameRate = 24;
+            string path = args[0];
+            string prefix = args[1];
+            string extension = args[2];
+            ushort count = ushort.Parse(args[3]);
+            byte frameRate = byte.Parse(args[4]);
 
             Console.WriteLine("FRAMEEXTRACT - it's FramePack without the packing part");
 
-            var binPath = Path.Combine(path, "..", $"{prefix}.bin");
+            var binPath = Path.Combine(Environment.CurrentDirectory, $"{prefix}.bin");
             var ostream = File.Open(binPath, FileMode.Create, FileAccess.Write, FileShare.None);
 
             Console.WriteLine($"reading {count} frame(s) from {path} of {prefix} with type {extension}\n" +

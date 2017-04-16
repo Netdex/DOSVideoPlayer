@@ -11,7 +11,7 @@
 #include "decoder.h"
 #include "keyboard.h"
 
-#define MSPERSEC 900
+#define MSPERSEC 1000
 
 extern byte *VGA_BUFFER;
 
@@ -36,12 +36,12 @@ int main() {
 	int last_lyric = 0;
 	char lyric_buffer[256] = "";
 
-	clock_t last_frame = clock();
+	uclock_t last_frame = uclock();
 	int frame_ratio = ah.frame_rate / hd.frame_rate;
 	int framems = (MSPERSEC / hd.frame_rate) / frame_ratio;
 
 	for (int f = 0; f < hd.frame_count * frame_ratio; f++) {
-		last_frame = clock();
+		last_frame = uclock();
 		if (f % frame_ratio == 0) {
 			// consume next video frame
 			decode_video_frame(video_file, VGA_BUFFER);
@@ -61,7 +61,6 @@ int main() {
 				lf = decode_lyric_frame(lyric_file);
 				lyric_event++;
 			}
-
 			printf("\r%s", lyric_buffer);
 		}
 
@@ -79,9 +78,10 @@ int main() {
 		if (key_pressed(0x01))	// exit condition
 			break;
 
-		clock_t now = clock();
-		clock_t diff = now - last_frame;
-		int del = max(0, framems - (int) (diff / CLOCKS_PER_SEC));
+		uclock_t now = uclock();
+		uclock_t diff = now - last_frame;
+		int del = max(0, framems - (int) (MSPERSEC * diff / UCLOCKS_PER_SEC));
+		//printf("\r%d %d %lld", framems, del, diff);
 		if (!key_pressed(0x1d))	// frame skip
 			delay(del);
 	}

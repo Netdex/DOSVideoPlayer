@@ -25,6 +25,7 @@ struct video_header decode_video_header(FILE *file) {
 
 void decode_video_reset() {
 	LZ4_setStreamDecode(lz4StreamDecode, NULL, 0);
+	decBufIndex = 0;
 }
 
 void decode_video_frame(FILE *file, byte *dest) {
