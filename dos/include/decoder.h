@@ -37,7 +37,7 @@ struct lyric_frame {
 };
 
 struct video_header decode_video_header(FILE *file);
-void decode_video_frame(FILE *file, byte* dest);
+void decode_video_frame(FILE *file, byte* palette, byte* dest);
 void decode_video_reset();
 
 

@@ -28,33 +28,30 @@ void decode_video_reset() {
 	decBufIndex = 0;
 }
 
-void decode_video_frame(FILE *file, byte *dest) {
+void decode_video_frame(FILE *file, byte *palette, byte *dest) {
 	int cmpBytes = 0;
 
-	{
-		const size_t readCount0 = read_int(file, &cmpBytes);
-		if (readCount0 != 1 || cmpBytes <= 0) {
-			printf("decode error");
-			exit(-1);
-		}
-
-		const size_t readCount1 = read_bin(file, cmpBuf, (size_t) cmpBytes);
-		if (readCount1 != (size_t) cmpBytes) {
-			printf("decode error");
-			exit(-1);
-		}
+	const size_t readCount0 = read_int(file, &cmpBytes);
+	if (readCount0 != 1 || cmpBytes <= 0) {
+		printf("decode error");
+		exit(-1);
 	}
 
-	{
-		char* const decPtr = decBuf[decBufIndex];
-		const int decBytes = LZ4_decompress_safe_continue(lz4StreamDecode,
-				cmpBuf, decPtr, cmpBytes, BLOCK_BYTES);
-		if (decBytes <= 0) {
-			printf("decode error");
-			exit(-1);
-		}
-		memcpy(dest, decPtr, decBytes);
+	const size_t readCount1 = read_bin(file, cmpBuf, (size_t) cmpBytes);
+	if (readCount1 != (size_t) cmpBytes) {
+		printf("decode error");
+		exit(-1);
 	}
+
+	char* const decPtr = decBuf[decBufIndex];
+	const int decBytes = LZ4_decompress_safe_continue(lz4StreamDecode, cmpBuf,
+			decPtr, cmpBytes, BLOCK_BYTES);
+	if (decBytes <= 0) {
+		printf("decode error");
+		exit(-1);
+	}
+	memcpy(dest, decPtr, decBytes);
+
 	decBufIndex = (decBufIndex + 1) % 2;
 }
 

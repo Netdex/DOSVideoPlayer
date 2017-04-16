@@ -1,5 +1,6 @@
 # Large data
-conv/frames
+frames
+raw
 *.mp4
 *.sfk
 *.veg
