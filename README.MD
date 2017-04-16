@@ -2,14 +2,17 @@
 `This project is a work-in-progress.`
 
 A trojan designed to nuke a hard drive and make it play Bad Apple on boot.
-[demo](https://streamable.com/gbiy2)
+[demo](https://streamable.com/84inx)
 
 ## Components
 
 ### Data Encoding
 #### Movie File Format
 ``` c
-/* Video is stored in a series of LZ4 compressed 256-color bitmaps */
+/* 
+ * Video is stored in a series of LZ4 compressed 256-color bitmaps 
+ * We update the palette every frame
+ */
 
 /* LZ4 compressed frame */
 struct frame_data {
@@ -28,7 +31,11 @@ struct video_data {
 
 #### Audio File Format
 ``` c
-/* Audio is stored in a series of single channel beepcodes */
+/* 
+ * Audio is stored in a series of single channel beepcodes
+ * We can only use the internal speaker for generating sound,
+ * since newer computers don't have SoundBlaster chips
+ */
 
 struct frame_data {
   unsigned short frame;
@@ -44,7 +51,7 @@ struct audio_data {
 ```
 
 #### Lyric File Format
-```
+``` c
 /* Lyrics are stored in a text file */
 [EVENT_COUNT]
 [PHONEME] [DELAY]
