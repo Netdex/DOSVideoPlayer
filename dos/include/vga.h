@@ -1,3 +1,7 @@
+/*
+ * Thank you based http://www.brackeen.com/vga/ for
+ * teaching me VGA
+ */
 
 #ifndef VGA_H_
 #define VGA_H_
@@ -13,6 +17,7 @@
 #define VIDEO_INT           0x10      /* the BIOS video interrupt. */
 #define WRITE_DOT           0x0C      /* BIOS func to plot a pixel. */
 #define SET_MODE            0x00      /* BIOS func to set the video mode. */
+
 #define VGA_256_COLOR_MODE  0x13      /* use to set 256-color mode. */
 #define TEXT_MODE           0x03      /* use to set 80x25 text mode. */
 
@@ -26,11 +31,13 @@
 #define VGA_CLEAR			0x1
 #define VGA_WAIT_RETRACE	0x2
 
-void vga_set_mode(byte mode);
-void vga_plot(int x,int y,byte color);
 void vga_init();
+void vga_set_mode(byte mode);
+void vga_plot(int x, int y, byte color);
 void vga_clear(byte color);
 void vga_swap(int flags);
 void vga_wait_retrace();
+void vga_set_palette_index(int index, int r, int g, int b);
+void vga_set_palette(byte *palette);
 
 #endif

@@ -13,14 +13,14 @@ namespace FramePack
     {
         public static unsafe void Main(string[] args)
         {
-            string path = @"D:\Security\VMSHARED\Development\BadAppleDOS\conv\frames";
+            string path = @"D:\Security\VMSHARED\Development\code\BadAppleDOS\conv\frames\badapple";
             string prefix = "badapple";
             string extension = "png";
             ushort count = 3288;
             byte frameRate = 15;
 
             Console.WriteLine("FRAMEPACK");
-            
+
             var binPath = Path.Combine(path, "..", $"{prefix}.bin");
             var ostream = File.Open(binPath, FileMode.Create, FileAccess.Write, FileShare.None);
 
@@ -37,7 +37,6 @@ namespace FramePack
                 string filePath = Path.Combine(path, fileName);
                 using (Bitmap bitmap = (Bitmap)Image.FromFile(filePath))
                 {
-                    
                     var data = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.ReadOnly,
                         PixelFormat.Format32bppPArgb);
 
@@ -85,10 +84,7 @@ namespace FramePack
 
         public static byte GetBinaryData(byte r, byte g, byte b)
         {
-            if ((r + g + b) / 3 > 128)
-                return 15;
-
-            return 0;
+            return (byte)(16 + (r + g + b) / 3 / 85 * 6);
         }
     }
 }

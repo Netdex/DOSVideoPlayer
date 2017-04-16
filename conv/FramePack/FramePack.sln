@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioPack", "AudioPack\Audi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VerifyAudioPack", "VerifyAudioPack\VerifyAudioPack.csproj", "{7D284FE2-867A-4864-9307-4FB5E0F2D231}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrameExtract", "FrameExtract\FrameExtract.csproj", "{FD5C2088-A7E3-411E-AEB5-9D6E640F6612}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{7D284FE2-867A-4864-9307-4FB5E0F2D231}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D284FE2-867A-4864-9307-4FB5E0F2D231}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D284FE2-867A-4864-9307-4FB5E0F2D231}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD5C2088-A7E3-411E-AEB5-9D6E640F6612}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD5C2088-A7E3-411E-AEB5-9D6E640F6612}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD5C2088-A7E3-411E-AEB5-9D6E640F6612}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD5C2088-A7E3-411E-AEB5-9D6E640F6612}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

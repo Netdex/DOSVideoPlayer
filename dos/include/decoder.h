@@ -6,19 +6,13 @@
 #include <stdlib.h>
 
 #include "types.h"
+#include "lz4.h"
+
+#define BLOCK_BYTES 64000
 
 struct video_header {
 	word frame_count;
 	byte frame_rate;
-};
-
-struct video_frame {
-	word chunk_count;
-};
-
-struct video_chunk_data {
-	byte data;
-	word repeat;
 };
 
 struct audio_header {
@@ -34,7 +28,7 @@ struct audio_frame {
 
 struct lyric_header {
 	word frame_count;
-	
+
 };
 
 struct lyric_frame {
@@ -43,7 +37,9 @@ struct lyric_frame {
 };
 
 struct video_header decode_video_header(FILE *file);
-struct video_frame decode_video_frame(FILE *file, byte* dest);
+void decode_video_frame(FILE *file, byte* dest);
+void decode_video_reset();
+
 
 struct audio_header decode_audio_header(FILE *file);
 struct audio_frame decode_audio_frame(FILE *file);

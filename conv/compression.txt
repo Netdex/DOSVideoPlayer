@@ -1,0 +1,22 @@
+video format
+frame count	 2 bytes
+fps		 1 byte
+frames... (frame countx320x200x1 byte)
+
+compress format
+frame count
+fps
+frame...
+{
+block size
+block... x block size
+}
+
+Frame2Bin: convert png frames into binary format above
+LZ4FramePack: keep the header, pack each frame with lz4 stream
+
+lz4 param
+stream size 64k, size of 1 frame
+double buffer stream
+
+Frame2Bin.exe -> LZ4FramePack.exe
