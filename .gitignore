@@ -1,11 +1,10 @@
 # Large data
+_comp
 frames
 raw
-*.mp4
-*.sfk
-*.veg
 *.bak
 *.bin
+*.lz4hc*
 
 # User-specific files
 *.suo
