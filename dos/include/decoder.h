@@ -26,25 +26,12 @@ struct audio_frame {
 	word frequency;
 };
 
-struct lyric_header {
-	word frame_count;
-
-};
-
-struct lyric_frame {
-	int delay;
-	char *text;
-};
-
 struct video_header decode_video_header(FILE *file);
-void decode_video_frame(FILE *file, byte* palette, byte* dest);
+void decode_video_frame(FILE *file, byte* palette, byte* palette_size,
+		byte* dest);
 void decode_video_reset();
-
 
 struct audio_header decode_audio_header(FILE *file);
 struct audio_frame decode_audio_frame(FILE *file);
-
-struct lyric_header decode_lyric_header(FILE *file);
-struct lyric_frame decode_lyric_frame(FILE *file);
 
 #endif

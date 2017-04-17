@@ -52,9 +52,9 @@ void vga_set_palette_index(int index, int r, int g, int b) {
 	outp(0x03c9, b >> 2);
 }
 
-void vga_set_palette(byte *palette) {
+void vga_set_palette(byte *palette, byte palette_size) {
 	outp(0x03c8, 0);
-	for (int i = 0; i < 256 * 3; i++) {
+	for (int i = 0; i < palette_size * 3; i++) {
 		outp(0x03c9, palette[i] >> 2);
 	}
 }

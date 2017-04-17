@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -18,10 +19,10 @@ namespace FrameExtract
     {
         public static unsafe void Main(string[] args)
         {
-            //string path = @"D:\Security\VMSHARED\Development\code\BadAppleDOS\conv\frames\badapple";
-            //string prefix = "badapple";
+            //string path = @"D:\Security\VMSHARED\Development\code\BadAppleDOS\conv\frames\badapple w lyric";
+            //string prefix = "bal";
             //string extension = "png";
-            //ushort count = 5260;
+            //ushort count = 5259;
             //byte frameRate = 24;
             string path = args[0];
             string prefix = args[1];
@@ -40,6 +41,7 @@ namespace FrameExtract
             ostream.Write(BitConverter.GetBytes(count), 0, 2);
             ostream.WriteByte(frameRate);
 
+            byte[] rawpalette = new byte[256 * 3];
             byte[] framebytes = new byte[320 * 200];
             
             var oq = new OctreeQuantizer();
@@ -66,8 +68,6 @@ namespace FrameExtract
                     }
 
                     Color[] palette = oq.GetPalette(256).ToArray();
-                    
-                    byte[] rawpalette = new byte[768];
 
                     for (int i = 0; i < palette.Length; i++)
                     {
@@ -75,7 +75,9 @@ namespace FrameExtract
                         rawpalette[i * 3 + 1] = palette[i].G;
                         rawpalette[i * 3 + 2] = palette[i].B;
                     }
-                    ostream.Write(rawpalette, 0, 768);
+
+                    ostream.WriteByte((byte) (palette.Length - 1));
+                    ostream.Write(rawpalette, 0, palette.Length * 3);
 
                     for (int offset = 0; offset < data.Width * data.Height; offset++)
                     {

@@ -64,14 +64,17 @@ void lz4_frame_pack(FILE* outFp, FILE* inpFp) {
 	write_short(outFp, frame_count);
 	write_byte(outFp, fps);
 
+	unsigned char palette_size;
 	char paletteBuf[768];
 
 	LZ4_resetStreamHC(lz4Stream, 9);
 
 	for (int f = 0; f < frame_count; f++) {
 		// write palette information
-		read_bin(inpFp, paletteBuf, 768);
-		write_bin(outFp, paletteBuf, 768);
+		read_byte(inpFp, &palette_size);
+		read_bin(inpFp, paletteBuf, (palette_size + 1) * 3);
+		write_byte(outFp, palette_size);
+		write_bin(outFp, paletteBuf, (palette_size + 1) * 3);
 
 		char* const inpPtr = inpBuf[inpBufIndex];
 		const int inpBytes = (int) read_bin(inpFp, inpPtr, BLOCK_BYTES);

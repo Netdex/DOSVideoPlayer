@@ -38,6 +38,6 @@ void vga_clear(byte color);
 void vga_swap(int flags);
 void vga_wait_retrace();
 void vga_set_palette_index(int index, int r, int g, int b);
-void vga_set_palette(byte *palette);
+void vga_set_palette(byte *palette, byte palette_size);
 
 #endif

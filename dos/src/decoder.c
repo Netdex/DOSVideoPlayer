@@ -8,6 +8,10 @@ int decBufIndex = 0;
 
 char cmpBuf[LZ4_COMPRESSBOUND(BLOCK_BYTES)];
 
+size_t read_byte(FILE* fp, byte* i) {
+	return fread(i, sizeof(*i), 1, fp);
+}
+
 size_t read_int(FILE* fp, int* i) {
 	return fread(i, sizeof(*i), 1, fp);
 }
@@ -28,10 +32,11 @@ void decode_video_reset() {
 	decBufIndex = 0;
 }
 
-void decode_video_frame(FILE *file, byte *palette, byte *dest) {
+void decode_video_frame(FILE *file, byte *palette, byte* palette_size, byte *dest) {
 	int cmpBytes = 0;
 	// decode palette
-	fread(palette, sizeof(byte), 768, file);
+	read_byte(file, palette_size);
+	read_bin(file, palette, 3 * (*palette_size + 1));
 
 	// decode frame data
 	const size_t readCount0 = read_int(file, &cmpBytes);
@@ -72,22 +77,4 @@ struct audio_frame decode_audio_frame(FILE *file) {
 	if (af.action)
 		fread(&af.frequency, sizeof(af.frequency), 1, file);
 	return af;
-}
-
-struct lyric_header decode_lyric_header(FILE *file) {
-	struct lyric_header lh;
-	fscanf(file, "%d", &lh.frame_count);
-	return lh;
-}
-
-struct lyric_frame decode_lyric_frame(FILE *file) {
-	struct lyric_frame lf;
-	fscanf(file, "%d ", &lf.delay);
-	char* text = (char*) malloc(32);
-	fgets(text, 32, file);
-	int l = strlen(text);
-	if (text[l - 1] == '\n')
-		text[l - 1] = '\0';
-	lf.text = text;
-	return lf;
 }
