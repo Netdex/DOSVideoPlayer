@@ -22,6 +22,7 @@ int main() {
 
 	FILE* video_file = fopen("badapple.bin", "rb");
 	struct video_header hd = decode_video_header(video_file);
+	byte palette[768];
 	decode_video_reset();
 
 	FILE* audio_file = fopen("audio.bin", "rb");
@@ -29,12 +30,12 @@ int main() {
 	struct audio_frame af;
 	word audio_event = 0;
 
-	FILE* lyric_file = fopen("lyrics.txt", "r");
-	struct lyric_frame lf;
-	struct lyric_header lh = decode_lyric_header(lyric_file);
-	word lyric_event = 0;
-	int last_lyric = 0;
-	char lyric_buffer[256] = "";
+//	FILE* lyric_file = fopen("lyrics.txt", "r");
+//	struct lyric_frame lf;
+//	struct lyric_header lh = decode_lyric_header(lyric_file);
+//	word lyric_event = 0;
+//	int last_lyric = 0;
+//	char lyric_buffer[256] = "";
 
 	uclock_t last_frame = uclock();
 	int frame_ratio = ah.frame_rate / hd.frame_rate;
@@ -44,24 +45,26 @@ int main() {
 		last_frame = uclock();
 		if (f % frame_ratio == 0) {
 			// consume next video frame
-			decode_video_frame(video_file, VGA_BUFFER);
-			vga_swap(VGA_WAIT_RETRACE);
+			decode_video_frame(video_file, palette, VGA_BUFFER);
+			vga_wait_retrace();
+			vga_set_palette(palette);
+			vga_swap(0);
 			int cmsec = 1000 * f / ah.frame_rate;
 
 			// consume next lyric frame
-			if (last_lyric + lf.delay < cmsec && lyric_event < lh.frame_count) {
-				if (lf.text) {
-					strcat(lyric_buffer, lf.text);
-					if ((int) strlen(lyric_buffer) > 32) {
-						memset(lyric_buffer, 0, 256);
-						strcpy(lyric_buffer, lf.text);
-					}
-				}
-				last_lyric += lf.delay;
-				lf = decode_lyric_frame(lyric_file);
-				lyric_event++;
-			}
-			printf("\r%s", lyric_buffer);
+//			if (last_lyric + lf.delay < cmsec && lyric_event < lh.frame_count) {
+//				if (lf.text) {
+//					strcat(lyric_buffer, lf.text);
+//					if ((int) strlen(lyric_buffer) > 32) {
+//						memset(lyric_buffer, 0, 256);
+//						strcpy(lyric_buffer, lf.text);
+//					}
+//				}
+//				last_lyric += lf.delay;
+//				lf = decode_lyric_frame(lyric_file);
+//				lyric_event++;
+//			}
+//			printf("\r%s", lyric_buffer);
 		}
 
 		// consume next audio frame
@@ -81,13 +84,12 @@ int main() {
 		uclock_t now = uclock();
 		uclock_t diff = now - last_frame;
 		int del = max(0, framems - (int) (MSPERSEC * diff / UCLOCKS_PER_SEC));
-		//printf("\r%d %d %lld", framems, del, diff);
 		if (!key_pressed(0x1d))	// frame skip
 			delay(del);
 	}
 	fclose(video_file);
 	fclose(audio_file);
-	fclose(lyric_file);
+//	fclose(lyric_file);
 
 	nosound();
 	vga_set_mode(TEXT_MODE);

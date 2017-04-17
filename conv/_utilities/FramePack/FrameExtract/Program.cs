@@ -18,16 +18,16 @@ namespace FrameExtract
     {
         public static unsafe void Main(string[] args)
         {
-            string path = @"D:\Security\VMSHARED\Development\code\BadAppleDOS\conv\frames\badapple";
-            string prefix = "badapple";
-            string extension = "png";
-            ushort count = 5260;
-            byte frameRate = 24;
-            //string path = args[0];
-            //string prefix = args[1];
-            //string extension = args[2];
-            //ushort count = ushort.Parse(args[3]);
-            //byte frameRate = byte.Parse(args[4]);
+            //string path = @"D:\Security\VMSHARED\Development\code\BadAppleDOS\conv\frames\badapple";
+            //string prefix = "badapple";
+            //string extension = "png";
+            //ushort count = 5260;
+            //byte frameRate = 24;
+            string path = args[0];
+            string prefix = args[1];
+            string extension = args[2];
+            ushort count = ushort.Parse(args[3]);
+            byte frameRate = byte.Parse(args[4]);
 
             Console.WriteLine("FRAMEEXTRACT - it's FramePack without the packing part");
 

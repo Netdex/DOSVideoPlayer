@@ -30,7 +30,10 @@ void decode_video_reset() {
 
 void decode_video_frame(FILE *file, byte *palette, byte *dest) {
 	int cmpBytes = 0;
+	// decode palette
+	fread(palette, sizeof(byte), 768, file);
 
+	// decode frame data
 	const size_t readCount0 = read_int(file, &cmpBytes);
 	if (readCount0 != 1 || cmpBytes <= 0) {
 		printf("decode error");

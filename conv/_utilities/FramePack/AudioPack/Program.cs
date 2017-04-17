@@ -12,16 +12,19 @@ namespace AudioPack
     {
         static void Main(string[] args)
         {
-            string path = @"D:\Security\VMSHARED\Development\code\BadAppleDOS\conv\midi";
-            string filename = "ba_mono";
-            int fps = 96;
+            //string path = @"D:\Security\VMSHARED\Development\code\BadAppleDOS\conv\midi";
+            //string filename = "ba_mono";
+            //int fps = 96;
+            string path = args[0];
+            string filename = args[1];
+            int fps = int.Parse(args[2]);
 
             string filepath = Path.Combine(path, filename + ".csv");
             double resolution = 1.0 / fps;
             string[] data = File.ReadAllLines(filepath);
             double tickpsec = -1;
 
-            var fstream = File.Open(Path.Combine(path, @"..", $"audio_{filename}.bin"), FileMode.Create, FileAccess.Write, FileShare.None);
+            var fstream = File.Open(Path.Combine(path, $"audio_{filename}.bin"), FileMode.Create, FileAccess.Write, FileShare.None);
             var eventBuffer = new MemoryStream();
             ushort eventCount = 0;
             ushort lastFrame = 0;

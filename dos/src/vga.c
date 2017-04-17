@@ -47,15 +47,15 @@ void vga_wait_retrace() {
 
 void vga_set_palette_index(int index, int r, int g, int b) {
 	outp(0x03c8, index);
-	outp(0x03c9, r);
-	outp(0x03c9, g);
-	outp(0x03c9, b);
+	outp(0x03c9, r >> 2);
+	outp(0x03c9, g >> 2);
+	outp(0x03c9, b >> 2);
 }
 
 void vga_set_palette(byte *palette) {
 	outp(0x03c8, 0);
 	for (int i = 0; i < 256 * 3; i++) {
-		outp(0x03c9, palette[i]);
+		outp(0x03c9, palette[i] >> 2);
 	}
 }
 
