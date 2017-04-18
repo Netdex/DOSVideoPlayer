@@ -3,6 +3,24 @@
 byte *DVGA = (byte *) 0xA0000; /* this points to video memory. */
 byte *VGA_BUFFER;
 
+byte DEF_PALETTE[] = {
+		0, 0, 0,
+		0, 0, 255,
+		0, 255, 255,
+		255, 0, 0,
+		255, 0, 255,
+		255, 255, 0,
+		0, 0, 0,
+		0, 0, 0,
+		0, 0, 0,
+		0, 0, 0,
+		0, 0, 0,
+		0, 0, 0,
+		0, 0, 0,
+		0, 0, 0,
+		0, 0, 0,
+		255, 255, 255,
+};
 void vga_init() {
 	if (__djgpp_nearptr_enable() == 0) {
 		printf("Couldn't get access to first 640K of memory.\n");
@@ -54,6 +72,12 @@ void vga_set_palette_index(int index, int r, int g, int b) {
 
 void vga_set_palette(byte *palette, byte palette_size) {
 	outp(0x03c8, 0);
+	if(palette_size > NUM_COLORS - RESERVED_PALETTE)
+		raise_error("Invalid Palette Size");
+
+	for (int i = 0; i < RESERVED_PALETTE * 3; i++) {
+		outp(0x03c9, DEF_PALETTE[i]);
+	}
 	for (int i = 0; i < palette_size * 3; i++) {
 		outp(0x03c9, palette[i] >> 2);
 	}

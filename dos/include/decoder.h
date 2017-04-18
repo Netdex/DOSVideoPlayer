@@ -7,8 +7,11 @@
 
 #include "types.h"
 #include "lz4.h"
+#include "error.h"
 
 #define BLOCK_BYTES 64000
+
+#define ERROR_DECODE "Decode Error"
 
 struct video_header {
 	word frame_count;

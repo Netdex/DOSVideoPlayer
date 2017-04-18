@@ -24,6 +24,7 @@ namespace FrameExtract
             //string extension = "png";
             //ushort count = 5259;
             //byte frameRate = 24;
+            const byte RESERVED_BYTES = 16;
             string path = args[0];
             string prefix = args[1];
             string extension = args[2];
@@ -67,7 +68,7 @@ namespace FrameExtract
                         oq.AddColor(Color.FromArgb(r, g, b), offset % data.Width, offset / data.Width);
                     }
 
-                    Color[] palette = oq.GetPalette(256).ToArray();
+                    Color[] palette = oq.GetPalette(256 - RESERVED_BYTES).ToArray();
 
                     for (int i = 0; i < palette.Length; i++)
                     {
@@ -86,7 +87,7 @@ namespace FrameExtract
                         byte g = ptr[1];
                         byte r = ptr[2];
 
-                        byte d = GetPaletteIndex(oq, offset % data.Width, offset / data.Width, r, g, b);
+                        byte d = (byte) (GetPaletteIndex(oq, offset % data.Width, offset / data.Width, r, g, b) + RESERVED_BYTES);
                         framebytes[offset] = d;
                     }
                     ostream.Write(framebytes, 0, framebytes.Length);

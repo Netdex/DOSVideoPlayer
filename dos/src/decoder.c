@@ -8,22 +8,30 @@ int decBufIndex = 0;
 
 char cmpBuf[LZ4_COMPRESSBOUND(BLOCK_BYTES)];
 
-size_t read_byte(FILE* fp, byte* i) {
-	return fread(i, sizeof(*i), 1, fp);
+void read_byte(FILE* fp, byte* i) {
+	if (fread(i, sizeof(*i), 1, fp) != 1)
+		raise_error(ERROR_DECODE);
 }
 
-size_t read_int(FILE* fp, int* i) {
-	return fread(i, sizeof(*i), 1, fp);
+void read_word(FILE* fp, word *i) {
+	if (fread(i, sizeof(*i), 1, fp) != 1)
+		raise_error(ERROR_DECODE);
 }
 
-size_t read_bin(FILE* fp, void* array, size_t arrayBytes) {
-	return fread(array, 1, arrayBytes, fp);
+void read_int(FILE* fp, int* i) {
+	if (fread(i, sizeof(*i), 1, fp) != 1)
+		raise_error(ERROR_DECODE);
+}
+
+void read_bin(FILE* fp, void* array, size_t arrayBytes) {
+	if (fread(array, 1, arrayBytes, fp) != arrayBytes)
+		raise_error(ERROR_DECODE);
 }
 
 struct video_header decode_video_header(FILE *file) {
 	struct video_header hd;
-	fread(&hd.frame_count, sizeof(hd.frame_count), 1, file);
-	fread(&hd.frame_rate, sizeof(hd.frame_rate), 1, file);
+	read_word(file, &hd.frame_count);
+	read_byte(file, &hd.frame_rate);
 	return hd;
 }
 
@@ -32,31 +40,23 @@ void decode_video_reset() {
 	decBufIndex = 0;
 }
 
-void decode_video_frame(FILE *file, byte *palette, byte* palette_size, byte *dest) {
+void decode_video_frame(FILE *file, byte *palette, byte* palette_size,
+		byte *dest) {
 	int cmpBytes = 0;
 	// decode palette
 	read_byte(file, palette_size);
-	read_bin(file, palette, 3 * (*palette_size + 1));
+	(*palette_size)++;
+	read_bin(file, palette, 3 * *palette_size);
 
 	// decode frame data
-	const size_t readCount0 = read_int(file, &cmpBytes);
-	if (readCount0 != 1 || cmpBytes <= 0) {
-		printf("decode error");
-		exit(-1);
-	}
-
-	const size_t readCount1 = read_bin(file, cmpBuf, (size_t) cmpBytes);
-	if (readCount1 != (size_t) cmpBytes) {
-		printf("decode error");
-		exit(-1);
-	}
+	read_int(file, &cmpBytes);
+	read_bin(file, cmpBuf, (size_t) cmpBytes);
 
 	char* const decPtr = decBuf[decBufIndex];
 	const int decBytes = LZ4_decompress_safe_continue(lz4StreamDecode, cmpBuf,
 			decPtr, cmpBytes, BLOCK_BYTES);
 	if (decBytes <= 0) {
-		printf("decode error");
-		exit(-1);
+		raise_error(ERROR_DECODE);
 	}
 	memcpy(dest, decPtr, decBytes);
 
@@ -65,16 +65,16 @@ void decode_video_frame(FILE *file, byte *palette, byte* palette_size, byte *des
 
 struct audio_header decode_audio_header(FILE *file) {
 	struct audio_header ah;
-	fread(&ah.frame_count, sizeof(ah.frame_count), 1, file);
-	fread(&ah.frame_rate, sizeof(ah.frame_rate), 1, file);
+	read_word(file, &ah.frame_count);
+	read_byte(file, &ah.frame_rate);
 	return ah;
 }
 
 struct audio_frame decode_audio_frame(FILE *file) {
 	struct audio_frame af;
-	fread(&af.frame, sizeof(af.frame), 1, file);
-	fread(&af.action, sizeof(af.action), 1, file);
+	read_word(file, &af.frame);
+	read_byte(file, &af.action);
 	if (af.action)
-		fread(&af.frequency, sizeof(af.frequency), 1, file);
+		read_word(file, &af.frequency);
 	return af;
 }

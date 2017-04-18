@@ -1,20 +1,18 @@
 EXEC_FILE=badapple
-IDIR=include
-CC=gcc
-CFLAGS=-I$(IDIR) -O3
 
 SDIR=src
 ODIR=obj
-LDIR =lib
+LDIR=lib
 BDIR=bin
+IDIR=include
 
+CC=gcc
+CFLAGS=-I$(IDIR) -O3 -Werror
 LIBS=-lm
 
-_DEPS = vga.h types.h util.h decoder.h keyboard.h lz4.h graphics.h
-DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
-
-_OBJ = main.o vga.o util.o decoder.o keyboard.o lz4.o graphics.o
-OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
+DEPS = $(wildcard $(IDIR)/*.h)
+SOURCES = $(wildcard $(SDIR)/*.c)
+OBJ = $(SOURCES:.c=.o)
 
 
 $(ODIR)/%.o: $(SDIR)/%.c $(DEPS)

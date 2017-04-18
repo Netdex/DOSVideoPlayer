@@ -10,6 +10,7 @@
 #include "util.h"
 #include "decoder.h"
 #include "keyboard.h"
+#include "font.h"
 
 #define MSPERSEC 1000
 
@@ -42,6 +43,7 @@ int main() {
 			decode_video_frame(video_file, palette, &palette_size, VGA_BUFFER);
 			vga_wait_retrace();
 			vga_set_palette(palette, palette_size);
+			draw_text(320 - TEXT_WIDTH * 9, 0, "BAD APPLE", 0xF);
 			vga_swap(0);
 		}
 
