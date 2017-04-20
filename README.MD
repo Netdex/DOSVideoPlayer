@@ -1,21 +1,21 @@
 # BadAppleDOS
 `This project is a work-in-progress.`
 
-A trojan designed to nuke a hard drive and make it play Bad Apple on boot.
+Rule 48: If it exists, bad apple can run on it.
 [demo](https://streamable.com/84inx)
 
 ## FAQ
 **Q:** What is this?<br>
 **A:** Basically just a small video player written in C for DOS.
 
-**Q:** Why is the audio so crappy?<br>
-**A:** I wanted it to work on modern computers, and modern sound cards are quite complicated to set up.
+**Q:** Why is the audio so terrible?<br>
+**A:** I wanted it to work on modern computers, and modern sound cards are quite complicated to set up, so my only option was the internal speaker.
 
-**Q:** Why is the video so crappy?<br>
+**Q:** Why is the video so terrible?<br>
 **A:** I'm sticking with VGA mode 13h, so enjoy it in its 240 color, 320x200 pixel glory. (16 colors reserved for text palette)
 
 **Q:** How do I run this?<br>
-**A:** Try to read some of the crappy documentation, or you could just email me.
+**A:** Try to read some of the documentation, or you could just email me.
 
 ## Workflow
 1. Export raw video file as series of PNG files (must be 320x200) at a reasonable FPS (less than 70fps). Exported files must be in format prefix_000000.png in ascending order.
@@ -88,5 +88,3 @@ struct audio_data {
 Tools for compressing audio files are in conv/midi, edit then run create.bat with the proper parameters.
 
 Relies on AudioPack.exe, whose source is at conv/\_utilities/FramePack/AudioPack
-
-### MBR Write + HDD Format
