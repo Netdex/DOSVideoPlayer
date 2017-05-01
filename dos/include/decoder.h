@@ -8,6 +8,7 @@
 #include "types.h"
 #include "lz4.h"
 #include "error.h"
+#include "fileio.h"
 
 #define BLOCK_BYTES 64000
 
