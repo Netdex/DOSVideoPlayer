@@ -16,6 +16,8 @@
 
 extern byte *VGA_BUFFER;
 
-void draw_text(int x, int y, const char *string, byte palette_color);
+void font_text(int x, int y, const char *string, byte palette_color);
+void font_draw();
+void font_clear();
 
 #endif /* INCLUDE_FONT_H_ */

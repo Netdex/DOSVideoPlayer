@@ -40,7 +40,7 @@ void vga_set_mode(byte mode) {
 }
 
 void vga_plot(int x, int y, byte color) {
-	VGA_BUFFER[y * VGA_WIDTH + x] = color;
+	VGA_BUFFER[(y << 8) + (y << 6) + x] = color;
 }
 
 void vga_clear(byte color) {

@@ -2569,18 +2569,32 @@ byte raster_font[] = {
 0x00, /* 0000 */
 };
 
-void draw_text(int x, int y, const char *string, byte palette_color) {
+byte FONT_BUFFER[VGA_WIDTH * VGA_HEIGHT];
+byte FONT_MASK[VGA_WIDTH * VGA_HEIGHT];
+void font_text(int x, int y, const char *string, byte palette_color) {
 	int i = 0;
 	char *c;
 	while (string[i] != '\0') {
 		c = raster_font + (int) string[i] * TEXT_HEIGHT;
 		for (int dy = 0; dy < TEXT_HEIGHT; dy++) {
 			for (int dx = 0; dx < TEXT_WIDTH; dx++) {
-				if (*(c + dy) & (1 << (7 - dx)))
-					VGA_BUFFER[(y + dy) * VGA_WIDTH + (x + dx + i * TEXT_WIDTH)] =
-							palette_color;
+				if (*(c + dy) & (1 << (7 - dx))){
+					int offset = (y + dy) * VGA_WIDTH + (x + dx + i * TEXT_WIDTH);
+					FONT_BUFFER[offset] = palette_color;
+					FONT_MASK[offset] = 1;
+				}
 			}
 		}
 		++i;
 	}
+}
+void font_draw(){
+	for(int i = 0; i < VGA_WIDTH * VGA_HEIGHT; i++){
+		if(FONT_MASK[i])
+			VGA_BUFFER[i] = FONT_BUFFER[i];
+	}
+}
+void font_clear(){
+	memset(FONT_BUFFER, 0, VGA_WIDTH * VGA_HEIGHT);
+	memset(FONT_MASK, 0, VGA_WIDTH * VGA_HEIGHT);
 }

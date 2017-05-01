@@ -9,5 +9,4 @@
 char hook_keyb_handler();
 void remove_keyb_handler();
 char key_pressed(unsigned char key);
-
 #endif

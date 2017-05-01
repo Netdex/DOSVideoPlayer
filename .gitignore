@@ -5,6 +5,9 @@ raw
 *.bin
 *.lz4hc*
 
+# Binaries
+*.o
+
 # User-specific files
 *.suo
 *.user
