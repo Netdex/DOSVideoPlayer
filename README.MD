@@ -2,17 +2,17 @@
 `This project is a work-in-progress.`
 
 Rule 48: If it exists, bad apple can run on it.
-[demo](https://streamable.com/84inx)
+[demo](https://streamable.com/yblq9)
 
 ## FAQ
 **Q:** What is this?<br>
-**A:** Basically just a small video player written in C for DOS.
+**A:** Basically just a small video player written in C for DOS. Although it could play anything you want, this specific project plays the `Bad Apple!!_ PV by NND user あにら`, with audio from `Bad Apple!! ft. Nomico by Alstroemeria Records`.
 
 **Q:** Why is the audio so terrible?<br>
 **A:** I wanted it to work on modern computers, and modern sound cards are quite complicated to set up, so my only option was the internal speaker.
 
 **Q:** Why is the video so terrible?<br>
-**A:** I'm sticking with VGA mode 13h, so enjoy it in its 240 color, 320x200 pixel glory. (16 colors reserved for text palette)
+**A:** I'm sticking with VGA mode 13h, so enjoy it in its 16 color, 320x200 pixel glory.
 
 **Q:** How do I run this?<br>
 **A:** Try to read some of the documentation, or you could just email me.
@@ -67,24 +67,12 @@ LZ4FramePack.exe compresses the frames with the LZ4 compression algorithm, its s
 #### Audio File Format
 ``` c
 /* 
- * Audio is stored in a series of single channel beepcodes
- * We can only use the internal speaker for generating sound,
- * since newer computers don't have SoundBlaster chips
+ * Audio is stored in 8-bit unsigned mono channel Microsoft header WAV data,
+ * use a sample rate of < 48000Hz (11000Hz seems to run the best)
+ *
+ * The audio is played through PCM over the internal speaker, so the audio
+ * quality is quite poor
  */
 
-struct frame_data {
-  unsigned short frame;
-  unsigned char action;
-  unsigned short frequency;
-};
-
-struct audio_data {
-  unsigned short frame_count;
-  struct frame_data *frames;
-} audio_binary;
-
 ```
-
-Tools for compressing audio files are in conv/midi, edit then run create.bat with the proper parameters.
-
-Relies on AudioPack.exe, whose source is at conv/\_utilities/FramePack/AudioPack
+Audio is no longer packed with midi
