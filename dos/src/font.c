@@ -2573,7 +2573,7 @@ byte FONT_BUFFER[VGA_WIDTH * VGA_HEIGHT];
 byte FONT_MASK[VGA_WIDTH * VGA_HEIGHT];
 void font_text(int x, int y, const char *string, byte palette_color) {
 	int i = 0;
-	char *c;
+	unsigned char *c;
 	while (string[i] != '\0') {
 		c = raster_font + (int) string[i] * TEXT_HEIGHT;
 		for (int dy = 0; dy < TEXT_HEIGHT; dy++) {

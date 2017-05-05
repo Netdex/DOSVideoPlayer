@@ -7,7 +7,7 @@ BDIR=bin
 IDIR=include
 
 CC=gcc
-CFLAGS=-I$(IDIR) -O2 -Werror
+CFLAGS=-I$(IDIR) -O2 -Werror -Wall
 LIBS=-lm
 
 DEPS = $(wildcard $(IDIR)/*.h)
@@ -24,4 +24,4 @@ $(EXEC_FILE): $(OBJ)
 .PHONY: clean
 
 clean:
-	rm -f $(ODIR)/*.o *~ core $(INCDIR)/*~ 
+	del $(ODIR)\*.o

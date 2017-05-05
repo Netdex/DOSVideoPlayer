@@ -107,7 +107,7 @@ int main() {
 					memcpy(DVGA,
 							video_data + modoffset * VGA_WIDTH * VGA_HEIGHT,
 							VGA_WIDTH * VGA_HEIGHT);
-					printf("\rF%d S%d", f, shift);
+					printf("\rF%d S%lld", f, shift);
 					last_video_frame = video_offset;
 				}
 			}
