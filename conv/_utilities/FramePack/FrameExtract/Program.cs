@@ -30,6 +30,7 @@ namespace FrameExtract
             string extension = args[2];
             ushort count = ushort.Parse(args[3]);
             byte frameRate = byte.Parse(args[4]);
+            byte colors = byte.Parse(args[5]);
 
             Console.WriteLine("FRAMEEXTRACT - it's FramePack without the packing part");
 
@@ -68,7 +69,7 @@ namespace FrameExtract
                         oq.AddColor(Color.FromArgb(r, g, b), offset % data.Width, offset / data.Width);
                     }
 
-                    Color[] palette = oq.GetPalette(256 - RESERVED_BYTES).ToArray();
+                    Color[] palette = oq.GetPalette(colors - RESERVED_BYTES).ToArray();
 
                     for (int i = 0; i < palette.Length; i++)
                     {

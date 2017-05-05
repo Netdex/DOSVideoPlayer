@@ -21,7 +21,7 @@
 #define PIT_FREQ		0x1234DD
 
 #define AUDIO_BUF_SZ 		65536
-#define VIDEO_BUF_SZ		8
+#define VIDEO_BUF_SZ		1
 
 extern byte *VGA_BUFFER;
 extern byte *DVGA;
@@ -29,6 +29,7 @@ extern byte *DVGA;
 byte mute = 0;
 byte skip = 0;
 byte vsync = 0;
+long long shift = 0;
 
 byte video_data[VGA_WIDTH * VGA_HEIGHT * VIDEO_BUF_SZ];
 byte palette_data[768 * VIDEO_BUF_SZ];
@@ -44,6 +45,7 @@ int main() {
 	struct video_header vh = decode_video_header(video_file);
 	decode_video_reset();
 	font_text(0, 0, ">>", 1);
+	int last_video_frame = 0;
 
 	/* AUDIO EVENT SETUP */
 	FILE *wav_file = fopen("audio.wav", "rb");
@@ -84,16 +86,13 @@ int main() {
 			}
 			skip = key_pressed(0x1d);
 
-			int modoffset = video_offset % VIDEO_BUF_SZ;
-			memcpy(DVGA, video_data + modoffset * VGA_WIDTH * VGA_HEIGHT,
-			VGA_WIDTH * VGA_HEIGHT);
-			vga_set_palette(palette_data + modoffset * 768,
-					*(palette_sizes + modoffset));
-
-			printf("\r%d", f / wh.SampleRate);
 			if (key_pressed(0x01))	// exit condition
 				break;
 
+			if (key_pressed(0x10))
+				shift++;
+			if (key_pressed(0x1E))
+				shift--;
 			video_offset++;
 		}
 
@@ -101,7 +100,16 @@ int main() {
 		int vstate = inp(INPUT_STATUS_1) & VRETRACE;
 		if (vstate) {
 			if (vsync == 1) {
-
+				int modoffset = video_offset % VIDEO_BUF_SZ;
+				if (last_video_frame != video_offset) {
+					vga_set_palette(palette_data + modoffset * 768,
+							*(palette_sizes + modoffset));
+					memcpy(DVGA,
+							video_data + modoffset * VGA_WIDTH * VGA_HEIGHT,
+							VGA_WIDTH * VGA_HEIGHT);
+					printf("\rF%d S%d", f, shift);
+					last_video_frame = video_offset;
+				}
 			}
 			vsync = 0;
 		} else {
@@ -116,7 +124,7 @@ int main() {
 		outportb(PIT_CHANNEL_2, quantmap[audio_data[f % AUDIO_BUF_SZ]]);
 
 		if (!skip) {
-			uclock_t trigger = last_sec + uclockspersample;
+			uclock_t trigger = last_sec + uclockspersample + shift;
 			while (uclock() < trigger) {
 				asm("");
 				// prevent the compiler from optimizing this away
