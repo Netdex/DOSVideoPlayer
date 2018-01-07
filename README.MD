@@ -1,7 +1,8 @@
 # DOS Video Player
 `This project is a work-in-progress.`
 
-[demo](https://streamable.com/yblq9)
+[demo video](https://streamable.com/298cg)  
+[old demo video](https://streamable.com/yblq9)
 
 ## FAQ
 **Q:** What is this?<br>
