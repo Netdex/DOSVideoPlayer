@@ -1,20 +1,18 @@
 # DOS Video Player
 `This project is a work-in-progress.`
 
-[demo video](https://streamable.com/298cg)  
-[old demo video](https://streamable.com/yblq9)
+### [Demonstration Video](https://streamable.com/298cg)  
+#### [Alternate Demonstration Video](https://streamable.com/yblq9)
 
 ## FAQ
 **Q:** What is this?<br>
 **A:** A small video player written in C for DOS. As of currently, it only supports a single video/audio format, created specifically for this application. Converters are included in this repository.
 
-Originally created to play`Bad Apple!!_ PV by NND user あにら`, with audio from `Bad Apple!! ft. Nomico by Alstroemeria Records`.
-
 **Q:** Why is the audio so terrible?<br>
 **A:** I wanted it to work on modern computers, and modern sound cards are quite complicated to set up, so my only option was the internal speaker.
 
 **Q:** Why is the video so terrible?<br>
-**A:** I'm sticking with VGA mode 13h, so enjoy it in its 16 color, 320x200 pixel glory.
+**A:** I'm sticking with VGA mode 13h, so enjoy it in its 240 color, 320x200 pixel glory.
 
 **Q:** How do I run this?<br>
 **A:** Try to read some of the documentation, or you could just email me.
