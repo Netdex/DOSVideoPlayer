@@ -1,4 +1,4 @@
-# DOS Video Player
+# VGAPlay
 `This project is a work-in-progress.`
 
 ### [Demonstration Video](https://streamable.com/298cg)  
