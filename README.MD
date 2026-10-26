@@ -1,4 +1,5 @@
 # VGAPlay
+A VGA video player and format converter for DOS systems
 `This project is a work-in-progress.`
 
 ### [Demonstration Video](https://streamable.com/298cg)  
